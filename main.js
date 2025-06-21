@@ -1,5 +1,6 @@
-const { app, BrowserWindow, ipcMain } = require("electron/main");
+const { app, Menu, BrowserWindow, ipcMain } = require("electron/main");
 const path = require("node:path");
+const { template } = require("./src/menuTemplate");
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 // This MUST be done before the app is ready.
@@ -15,6 +16,13 @@ const createWindow = () => {
       preload: path.join(__dirname, "preload.js"),
     },
   });
+
+  //  // Build the menu from template
+  // const menu = Menu.buildFromTemplate(template)
+  const menu = Menu.buildFromTemplate(template);
+
+  // // Set the application menu
+  Menu.setApplicationMenu(menu);
 
   win.loadFile("index.html");
 };
