@@ -1,4 +1,5 @@
-// Define your custom menu template
+const { dialog } = require("electron");
+
 const template = [
   {
     label: "Noir", // Replace with your app name
@@ -20,8 +21,13 @@ const template = [
       {
         label: "Open",
         accelerator: "CmdOrCtrl+O",
-        click: () => {
-          console.log("Open clicked");
+        click: async () => {
+          const result = await dialog.showOpenDialog({
+            properties: ["openFile"],
+          });
+          if (!result.canceled) {
+            console.log("Selected files:", result.filePaths);
+          }
         },
       },
       { type: "separator" },

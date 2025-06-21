@@ -24,6 +24,7 @@ const createWindow = () => {
   // // Set the application menu
   Menu.setApplicationMenu(menu);
 
+  win.maximize();
   win.loadFile("index.html");
 };
 
