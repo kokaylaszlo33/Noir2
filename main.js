@@ -14,6 +14,9 @@ const createWindow = () => {
     height: 600,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
+      contextIsolation: true, // Crucial for security
+      sandbox: true, // Recommended protection
+      nodeIntegration: false,
     },
   });
 
@@ -24,6 +27,7 @@ const createWindow = () => {
   // // Set the application menu
   Menu.setApplicationMenu(menu);
 
+  // win.webContents.openDevTools();
   win.maximize();
   win.loadFile("index.html");
 };
@@ -31,6 +35,12 @@ const createWindow = () => {
 app.whenReady().then(() => {
   ipcMain.handle("ping", () => "pong");
   createWindow();
+
+  const { globalShortcut } = require("electron");
+  globalShortcut.register("Esc", () => {
+    const win = BrowserWindow.getFocusedWindow();
+    if (win) win.webContents.toggleDevTools();
+  });
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
